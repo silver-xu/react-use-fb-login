@@ -6,7 +6,7 @@ export interface User {
   email?: string;
 }
 
-export interface FaceBookAuthState {
+export interface FaceBookLoginState {
   isSdkLoaded: boolean;
   isProcessing: boolean;
   isLoggedIn: boolean;
@@ -16,12 +16,12 @@ export interface FaceBookAuthState {
 
 type FacebookFields = 'name' | 'email' | 'gender';
 
-export interface FaceBookAuthProps {
+export interface FaceBookLoginProps {
   appId: string;
   language: string;
   version: string;
   fields: FacebookFields[];
-  onFailure?: () => void;
+  onFailure?: (response: any) => void;
 }
 
 const getWindow = (): any => {
@@ -29,33 +29,44 @@ const getWindow = (): any => {
 };
 
 const getUserInfo = (
-  props: FaceBookAuthProps,
-  state: FaceBookAuthState,
-  setState: (state: FaceBookAuthState) => void
+  props: FaceBookLoginProps,
+  state: FaceBookLoginState,
+  setState: (state: FaceBookLoginState) => void
 ): void => {
   getWindow().FB.api('/me', { locale: props.language, fields: props.fields.join(',') }, (response: any) => {
     const currentUser: User = response;
-    setState({ ...state, isLoggedIn: true, currentUser, isProcessing: false, loaded: true });
+    setState({
+      ...state,
+      isLoggedIn: true,
+      currentUser,
+      isProcessing: false,
+      loaded: true,
+    });
   });
 };
 
 const checkLoginCallback = (
   response: any,
-  props: FaceBookAuthProps,
-  state: FaceBookAuthState,
-  setState: (state: FaceBookAuthState) => void
+  props: FaceBookLoginProps,
+  state: FaceBookLoginState,
+  setState: (state: FaceBookLoginState) => void
 ): void => {
   if (response.status === 'connected') {
     getUserInfo(props, state, setState);
   } else {
-    setState({ ...state, isLoggedIn: false, currentUser: undefined, isProcessing: false });
+    setState({
+      ...state,
+      isLoggedIn: false,
+      currentUser: undefined,
+      isProcessing: false,
+    });
   }
 };
 
 const setFacekbookAsyncInit = (
-  props: FaceBookAuthProps,
-  state: FaceBookAuthState,
-  setState: (state: FaceBookAuthState) => void
+  props: FaceBookLoginProps,
+  state: FaceBookLoginState,
+  setState: (state: FaceBookLoginState) => void
 ): void => {
   getWindow().fbAsyncInit = () => {
     getWindow().FB.init({
@@ -74,7 +85,7 @@ const setFacekbookAsyncInit = (
   };
 };
 
-const loadSdkAsynchronously = (props: FaceBookAuthProps, state: FaceBookAuthState): void => {
+const loadSdkAsynchronously = (props: FaceBookLoginProps, state: FaceBookLoginState): void => {
   ((doc: Document, script: string, sdkId: string) => {
     const newScriptElement = doc.createElement(script) as HTMLScriptElement;
 
@@ -93,15 +104,15 @@ const loadSdkAsynchronously = (props: FaceBookAuthProps, state: FaceBookAuthStat
 
 const loginCallback = (
   response: any,
-  props: FaceBookAuthProps,
-  state: FaceBookAuthState,
-  setState: (state: FaceBookAuthState) => void
+  props: FaceBookLoginProps,
+  state: FaceBookLoginState,
+  setState: (state: FaceBookLoginState) => void
 ): void => {
   if (response.authResponse) {
     getUserInfo(props, state, setState);
   } else {
     if (props.onFailure) {
-      props.onFailure();
+      props.onFailure(response);
       setState({ ...state, isProcessing: false });
     }
   }
@@ -109,9 +120,9 @@ const loginCallback = (
 
 const logoutCallback = (
   response: any,
-  props: FaceBookAuthProps,
-  state: FaceBookAuthState,
-  setState: (state: FaceBookAuthState) => void
+  props: FaceBookLoginProps,
+  state: FaceBookLoginState,
+  setState: (state: FaceBookLoginState) => void
 ): void => {
   if (response.authResponse) {
     setState({
@@ -122,13 +133,13 @@ const logoutCallback = (
     });
   } else {
     if (props.onFailure) {
-      props.onFailure();
+      props.onFailure(response);
     }
   }
 };
 
-export const useFacebookAuth = (props: FaceBookAuthProps): [FaceBookAuthState, () => void, () => void] => {
-  const [state, setState] = useState<FaceBookAuthState>({
+export const useFacebookLogin = (props: FaceBookLoginProps): [FaceBookLoginState, () => void, () => void] => {
+  const [state, setState] = useState<FaceBookLoginState>({
     isSdkLoaded: false,
     isProcessing: false,
     isLoggedIn: false,
@@ -153,7 +164,7 @@ export const useFacebookAuth = (props: FaceBookAuthProps): [FaceBookAuthState, (
 
     setFacekbookAsyncInit(props, state, setState);
     loadSdkAsynchronously(props, state);
-  }, [props]);
+  }, [props.appId, props.fields.join(','), props.language, props.version]);
 
   return [state, login, logout];
 };

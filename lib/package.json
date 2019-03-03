@@ -1,18 +1,18 @@
 {
-  "name": "react-use-facebook-auth",
+  "name": "react-use-fb-login",
   "description": "A React hook for Facebook Login Logout",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "scripts": {
     "test": "mocha --opts tests/mocha.opts tests/**/*-test.{ts,tsx} && npm run lint && npm run build",
     "lint": "eslint 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
     "format": "prettier --write 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
-    "build": "rm -rf lib && tsc -p . && rm -fr lib/tests && rm -fr lib/src",
+    "build": "rm -rf dist && tsc -p . && rm -fr dist/tests && rm -fr dist/src",
     "prepublish": "npm run build"
   },
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "license": "MIT",
-  "files": ["lib/"],
+  "files": ["dist/"],
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/mocha": "^2.2.40",
