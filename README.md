@@ -1,11 +1,17 @@
-# useFacebookLogin allows you to use the latest React Hook to login / logout using Facebook Logins.
+# useFacebookLogin for React Hooks
+
+useFacebookLogin allows you to use the latest React Hook to login / logout using Facebook Logins.
+
+## Installation
+
+```shell
+npm install react-use-fb-login --save
+```
 
 ## Usage:
 
 ```js
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import { useFacebookLogin } from "react-use-fb-login";
 
 const App = () => {
@@ -51,4 +57,4 @@ const App = () => {
 export default App;
 
 ```
-
+I appreciate my wife to letting me using our precious family time to work on this project.
