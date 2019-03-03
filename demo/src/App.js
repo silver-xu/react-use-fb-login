@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { useFacebookLogin } from "./use-fb-login";
+import { useFacebookLogin } from "react-use-fb-login";
 
 const App = () => {
   const facebookProps = {
@@ -13,15 +13,17 @@ const App = () => {
       console.log(error);
     }
   };
-  const [state, login, logout] = useFacebookLogin(facebookProps);
+  const [{ loaded, currentUser, isLoggedIn }, login, logout] = useFacebookLogin(
+    facebookProps
+  );
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        {state.loaded ? (
-          state.currentUser ? (
-            <div>Currently logged in as: {state.currentUser.name}</div>
+        {loaded ? (
+          currentUser ? (
+            <div>Currently logged in as: {currentUser.name}</div>
           ) : (
             <div>Not logged in</div>
           )
@@ -29,8 +31,8 @@ const App = () => {
           <div>Retrieving User from Facebook...</div>
         )}
         <br />
-        {state.loaded ? (
-          state.isLoggedIn ? (
+        {loaded ? (
+          isLoggedIn ? (
             <button onClick={logout}>Logout</button>
           ) : (
             <button onClick={login}>Login</button>
