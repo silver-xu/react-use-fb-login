@@ -14,7 +14,7 @@ export interface FaceBookLoginState {
   loaded: boolean;
 }
 
-type FacebookFields = 'name' | 'email' | 'gender';
+type FacebookFields = 'name' | 'email' | 'gender' | 'id';
 
 export interface FaceBookLoginProps {
   appId: string;
