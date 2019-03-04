@@ -1,7 +1,8 @@
 {
   "name": "react-use-fb-login",
   "description": "A React hook for Facebook Login Logout",
-  "version": "1.0.3",
+  "keywords": ["facebook", "react", "hook", "login", "logout", "auth"],
+  "version": "1.0.5",
   "scripts": {
     "test": "mocha --opts tests/mocha.opts tests/**/*-test.{ts,tsx} && npm run lint && npm run build",
     "lint": "eslint 'src/**/*.{ts,tsx}' 'tests/**/*.{ts,tsx}'",
