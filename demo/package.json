@@ -6,7 +6,7 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5",
-    "react-use-fb-login": "^1.0.3"
+    "react-use-fb-login": "^1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
